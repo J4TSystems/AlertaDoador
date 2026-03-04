@@ -1,1 +1,122 @@
-# pi1-sistema-doacao-sangue
+# AlertaDoador
+
+**Projeto Integrador - UNIVESP**
+
+## Sobre o Projeto
+O objetivo é conectar a demanda real dos hemocentros com alunos dispostos a doar enviando notificações direcionadas apenas quando um tipo sanguíneo específico entra em falta.
+
+## Como Iniciar (Desenvolvimento)
+
+Para rodar o projeto localmente usando Docker, siga os passos abaixo:
+
+### Pré-requisitos
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Make](https://www.gnu.org/software/make/) (opcional, mas recomendado)
+
+### Passos
+1. **Construir as imagens:**
+   ```bash
+   make build
+   # ou: docker compose build
+   ```
+
+2. **Subir os serviços:**
+   ```bash
+   make up
+   # ou: docker compose up -d
+   ```
+
+3. **Acessar as aplicações:**
+   - **Frontend:** [http://localhost:3000](http://localhost:3000)
+   - **Backend (API):** [http://localhost:8000](http://localhost:8000)
+   - **Documentação API (Swagger):** [http://localhost:8000/docs](http://localhost:8000/docs)
+
+4. **Ver logs:**
+   ```bash
+   make logs
+   # ou: docker compose logs -f
+   ```
+
+5. **Parar os serviços:**
+   ```bash
+   make down
+   # ou: docker compose down
+   ```
+
+
+## Como Funciona (Fluxo)
+
+```mermaid
+flowchart LR
+    %% Define the nodes
+    User((User))
+    Forms["google forms<br>(doadores)"]
+    Scraper["Web Scraping<br>(falta sangue prosangue)"]
+    App["AlertaDoador<br>(App)"]
+    DB[( )]
+    Notify["notify"]
+    Email["email"]
+
+    %% Define the connections and labels
+    User -- "preenche" --> Forms
+    Forms -- "insert" --> App
+    App --> DB
+    Scraper -- "schedule a cada hora" --> App
+    DB .-> App
+    App  --> Notify
+    Notify -- "enviar" --> Email
+    Email -- "notifica o- em falta" --> User
+```
+
+
+1. **Coleta (Google Forms):** Alunos do polo preenchem um formulário com seus dados básicos e tipo sanguíneo.
+2. **Monitoramento (Web Scraping):** O sistema checa periodicamente os níveis de estoque no site do hemocentro.
+3. **Notificação (E-mail):** Quando o estoque de um tipo sanguíneo atinge nível crítico ou baixo, o sistema cruza as informações e dispara um alerta aos alunos compatíveis.
+
+# Estrutura
+```text
+alerta-doador/
+├── backend/
+│   ├── src/
+│   │   ├── domain/          # Models, Enums
+│   │   ├── repositories/    # DonorRepository
+│   │   ├── services/        # InventoryScraper, AlertSender
+│   │   └── main.py          # ou index.ts
+│   ├── tests/               # AAA pattern
+│   ├── Dockerfile
+│   └── requirements.txt     #
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/        # API calls
+│   │   └── App.tsx
+│   ├── tests/               # AAA pattern
+│   ├── Dockerfile
+│   └── package.json
+├── docker-compose.yml
+├── Makefile
+├── .gitignore
+└── README.md
+```
+
+## Domínio e Arquitetura
+
+**Schemas:**
+* `users`
+* `blood_banks`
+* `blood_bank_stocks`
+* `notifications`
+
+**Enums:**
+* `BloodType` (A_POSITIVE, O_NEGATIVE, etc.)
+* `StockStatus` (CRITICAL, LOW, STABLE)
+
+**Layers (Serviços):**
+* `InventoryScraper`: Serviço que extrai os dados do hemocentro.
+* `DonorRepository`: Gerencia o acesso aos dados coletados.
+* `AlertSender`: Motor de cruzamento de dados e disparo de e-mails.
+
+
