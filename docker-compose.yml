@@ -29,7 +29,8 @@ services:
       - db
     networks:
         - alerta_doador
-    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+    working_dir: /app/src
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
   frontend:
     build: ./frontend
@@ -40,10 +41,11 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    stdin_open: true
-    tty: true
     networks:
       - alerta_doador
+    environment:
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
 
 volumes:
   postgres_data:
