@@ -102,6 +102,39 @@ alerta-doador/
 └── README.md
 ```
 
+## Padronização e Qualidade de Código
+
+O projeto utiliza o **Ruff** como ferramenta unificada para linting, formatação e ordenação de imports, garantindo rapidez e consistência.
+
+### Linting e Formatação Local
+
+Para rodar o Ruff manualmente:
+```bash
+# Verificar erros (Lint)
+ruff check .
+
+# Aplicar correções automáticas
+ruff check . --fix
+
+# Formatar o código
+ruff format .
+```
+
+### Pre-commit
+Configuramos o `pre-commit` para impedir commits que não sigam os padrões. Para instalar e ativar:
+```bash
+# Instalar dependências de desenvolvimento
+pip install -r backend/requirements-dev.txt
+
+# Ativar pre-commit
+pre-commit install
+```
+
+### CI/CD (GitHub Actions)
+A cada push ou pull request, o GitHub Actions executa automaticamente o Ruff para validar o código. Caso existam erros, o merge será bloqueado.
+
+---
+
 ## Domínio e Arquitetura
 
 **Schemas:**
@@ -120,3 +153,13 @@ alerta-doador/
 * `AlertSender`: Motor de cruzamento de dados e disparo de e-mails.
 
 
+## 🐶 API Client (Bruno)
+
+Este projeto utiliza o [API Client Bruno](https://www.usebruno.com/) como cliente de API Git-native.
+
+### Como usar:
+1. Instale o API Client Bruno no seu computador.
+2. Abra o API Client Bruno e selecione **"Open Collection"**.
+3. Navegue até a pasta raiz deste projeto e selecione a pasta `api-client`.
+4. No canto superior direito do Bruno, selecione o ambiente **"Local"** para que a `base_url` seja configurada corretamente para `http://localhost:8000`.
+5. Agora você pode testar os endpoints de categorias (`List`, `Create`, `Delete`).
