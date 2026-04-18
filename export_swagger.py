@@ -1,13 +1,13 @@
 import json
-import sys
 import os
+import sys
 
 # Adiciona o diretório src ao path
 sys.path.append(os.path.join(os.getcwd(), "backend", "src"))
 
 try:
     from main import app
-    
+
     def export_openapi():
         openapi_schema = app.openapi()
         with open("openapi.json", "w") as f:

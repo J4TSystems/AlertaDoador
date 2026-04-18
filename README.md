@@ -102,6 +102,39 @@ alerta-doador/
 └── README.md
 ```
 
+## Padronização e Qualidade de Código
+
+O projeto utiliza o **Ruff** como ferramenta unificada para linting, formatação e ordenação de imports, garantindo rapidez e consistência.
+
+### Linting e Formatação Local
+
+Para rodar o Ruff manualmente:
+```bash
+# Verificar erros (Lint)
+ruff check .
+
+# Aplicar correções automáticas
+ruff check . --fix
+
+# Formatar o código
+ruff format .
+```
+
+### Pre-commit
+Configuramos o `pre-commit` para impedir commits que não sigam os padrões. Para instalar e ativar:
+```bash
+# Instalar dependências de desenvolvimento
+pip install -r backend/requirements-dev.txt
+
+# Ativar pre-commit
+pre-commit install
+```
+
+### CI/CD (GitHub Actions)
+A cada push ou pull request, o GitHub Actions executa automaticamente o Ruff para validar o código. Caso existam erros, o merge será bloqueado.
+
+---
+
 ## Domínio e Arquitetura
 
 **Schemas:**

@@ -1,7 +1,9 @@
 from typing import List, Optional
-from sqlalchemy.orm import Session
-from models.donor_model import DonorModel
+
 from dtos.donor_dto import DonorCreate
+from models.donor_model import DonorModel
+from sqlalchemy.orm import Session
+
 
 class DonorRepository:
     def __init__(self, db: Session):
@@ -11,7 +13,7 @@ class DonorRepository:
         db_donor = DonorModel(
             full_name=donor_data.full_name,
             email=donor_data.email,
-            blood_type=donor_data.blood_type
+            blood_type=donor_data.blood_type,
         )
         self.db.add(db_donor)
         self.db.commit()

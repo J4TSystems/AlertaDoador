@@ -1,8 +1,10 @@
-from sqlalchemy import Column, Integer, String, Enum as SQLEnum
-from sqlalchemy.ext.declarative import declarative_base
 from dtos.donor_dto import BloodType
+from sqlalchemy import Column, Integer, String
+from sqlalchemy import Enum as SQLEnum
+from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
+
 
 class DonorModel(Base):
     __tablename__ = "donors"

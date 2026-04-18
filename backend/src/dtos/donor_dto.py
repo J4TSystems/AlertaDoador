@@ -1,5 +1,7 @@
 from enum import Enum
+
 from pydantic import BaseModel, EmailStr
+
 
 class BloodType(str, Enum):
     A_POS = "A+"
@@ -11,10 +13,12 @@ class BloodType(str, Enum):
     O_POS = "O+"
     O_NEG = "O-"
 
+
 class DonorCreate(BaseModel):
     full_name: str
     email: EmailStr
     blood_type: BloodType
+
 
 class DonorRead(BaseModel):
     id: int

@@ -5,5 +5,3 @@ sqlalchemy
 requests
 pydantic[email]
 python-dotenv
-pytest
-httpx
