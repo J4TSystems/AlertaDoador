@@ -3,10 +3,8 @@ services:
     image: postgres:15-alpine
     restart: always
     container_name: alerta_doador-db
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=alerta_doador
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     networks:
@@ -22,8 +20,9 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+    env_file:
+      - .env
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/alerta_doador
       - PYTHONPATH=/app/src
     depends_on:
       - db
