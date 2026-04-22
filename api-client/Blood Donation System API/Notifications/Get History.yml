@@ -1,0 +1,42 @@
+info:
+  name: Get History
+  type: http
+  seq: 2
+  tags:
+    - Notifications
+
+http:
+  method: GET
+  url: "{{alerta_doador_backend}}/notifications/history"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: Successful Response
+    request:
+      url: "{{baseUrl}}/notifications/history"
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          [
+            {
+              "id": "",
+              "recipient_email": "",
+              "blood_type": "A+",
+              "status_at_time": "Critical",
+              "sent_at": ""
+            }
+          ]

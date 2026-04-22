@@ -111,13 +111,13 @@ O projeto utiliza o **Ruff** como ferramenta unificada para linting, formataçã
 Para rodar o Ruff manualmente:
 ```bash
 # Verificar erros (Lint)
-ruff check .
+ruff check --config pyproject.toml backend
 
-# Aplicar correções automáticas
-ruff check . --fix
+# Aplicar correções automáticas (incluindo ordenação de imports)
+ruff check --fix --config pyproject.toml backend
 
 # Formatar o código
-ruff format .
+ruff format --config pyproject.toml backend
 ```
 
 ### Pre-commit
