@@ -1,0 +1,49 @@
+meta {
+  name: Get Stock
+  type: http
+  seq: 1
+  tags: [
+    blood_stock
+  ]
+}
+
+get {
+  url: {{baseUrl}}/stock/
+  body: none
+  auth: inherit
+}
+
+example {
+  name: 200 Response
+  description: Successful Response
+  
+  request: {
+    url: {{baseUrl}}/stock/
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        [
+          {
+            "blood_type": "A+",
+            "status": "Critical",
+            "last_updated": ""
+          }
+        ]
+      '''
+    }
+  }
+}

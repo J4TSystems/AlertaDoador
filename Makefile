@@ -1,4 +1,4 @@
-.PHONY: build up down logs test-backend test-frontend lint format
+.PHONY: build up down logs test-backend test-frontend lint format export-api-client
 
 build:
 	docker compose build
@@ -24,3 +24,6 @@ lint:
 format:
 	-ruff check --fix --config pyproject.toml backend
 	ruff format --config pyproject.toml backend
+
+export-api-client:
+	@chmod +x ./scripts/api-client-export/client_api_update.sh && ./scripts/api-client-export/client_api_update.sh

@@ -1,0 +1,51 @@
+meta {
+  name: Get History
+  type: http
+  seq: 2
+  tags: [
+    notifications
+  ]
+}
+
+get {
+  url: {{baseUrl}}/notifications/history
+  body: none
+  auth: inherit
+}
+
+example {
+  name: 200 Response
+  description: Successful Response
+  
+  request: {
+    url: {{baseUrl}}/notifications/history
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        [
+          {
+            "id": "",
+            "recipient_email": "",
+            "blood_type": "A+",
+            "status_at_time": "Critical",
+            "sent_at": ""
+          }
+        ]
+      '''
+    }
+  }
+}

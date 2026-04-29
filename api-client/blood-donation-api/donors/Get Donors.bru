@@ -1,0 +1,50 @@
+meta {
+  name: Get Donors
+  type: http
+  seq: 1
+  tags: [
+    donors
+  ]
+}
+
+get {
+  url: {{baseUrl}}/donors/
+  body: none
+  auth: inherit
+}
+
+example {
+  name: 200 Response
+  description: Successful Response
+  
+  request: {
+    url: {{baseUrl}}/donors/
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        [
+          {
+            "id": 0,
+            "full_name": "",
+            "email": "",
+            "blood_type": "A+"
+          }
+        ]
+      '''
+    }
+  }
+}

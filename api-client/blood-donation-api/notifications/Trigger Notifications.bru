@@ -1,0 +1,43 @@
+meta {
+  name: Trigger Notifications
+  type: http
+  seq: 1
+  tags: [
+    notifications
+  ]
+}
+
+post {
+  url: {{baseUrl}}/notifications/send-alerts
+  body: none
+  auth: inherit
+}
+
+example {
+  name: 200 Response
+  description: Successful Response
+  
+  request: {
+    url: {{baseUrl}}/notifications/send-alerts
+    method: POST
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+  
+      '''
+    }
+  }
+}

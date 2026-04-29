@@ -147,7 +147,7 @@
     "/stock/": {
       "get": {
         "tags": [
-          "Blood Stock"
+          "blood stock"
         ],
         "summary": "Get Stock",
         "operationId": "get_stock_stock__get",
@@ -172,7 +172,7 @@
     "/stock/sync": {
       "post": {
         "tags": [
-          "Blood Stock"
+          "blood stock"
         ],
         "summary": "Sync Stock",
         "operationId": "sync_stock_stock_sync_post",
@@ -191,7 +191,7 @@
     "/notifications/send-alerts": {
       "post": {
         "tags": [
-          "Notifications"
+          "notifications"
         ],
         "summary": "Trigger Notifications",
         "operationId": "trigger_notifications_notifications_send_alerts_post",
@@ -210,7 +210,7 @@
     "/notifications/history": {
       "get": {
         "tags": [
-          "Notifications"
+          "notifications"
         ],
         "summary": "Get History",
         "operationId": "get_history_notifications_history_get",

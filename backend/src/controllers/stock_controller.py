@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
     Manages blood stock levels, coordinates web scraping sync
     and exposes real-time inventory data.
 """
-router = APIRouter(prefix="/stock", tags=["Blood Stock"])
+router = APIRouter(prefix="/stock", tags=["blood stock"])
 
 
 def get_stock_service(db: Session = Depends(get_db)) -> StockService:
