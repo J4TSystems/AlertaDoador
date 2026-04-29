@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
     Orchestrates alerts by matching critical stocks with donors
     and managing dispatch history.
 """
-router = APIRouter(prefix="/notifications", tags=["Notifications"])
+router = APIRouter(prefix="/notifications", tags=["notifications"])
 
 
 def get_notification_service(db: Session = Depends(get_db)) -> NotificationService:

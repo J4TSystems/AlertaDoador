@@ -1,0 +1,88 @@
+meta {
+  name: Delete Donor
+  type: http
+  seq: 4
+  tags: [
+    donors
+  ]
+}
+
+delete {
+  url: {{baseUrl}}/donors/:donor_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  donor_id: 
+}
+
+example {
+  name: 204 Response
+  description: Successful Response
+  
+  request: {
+    url: {{baseUrl}}/donors/:donor_id
+    method: DELETE
+    mode: none
+    params:path: {
+      donor_id: 
+    }
+  }
+  
+  response: {
+    status: {
+      code: 204
+      text: No Content
+    }
+  
+    body: {
+      type: text
+      content: '''
+  
+      '''
+    }
+  }
+}
+
+example {
+  name: 422 Response
+  description: Validation Error
+  
+  request: {
+    url: {{baseUrl}}/donors/:donor_id
+    method: DELETE
+    mode: none
+    params:path: {
+      donor_id: 
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 422
+      text: Unprocessable Entity
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "detail": [
+            {
+              "loc": [],
+              "msg": "",
+              "type": "",
+              "input": "",
+              "ctx": {}
+            }
+          ]
+        }
+      '''
+    }
+  }
+}
