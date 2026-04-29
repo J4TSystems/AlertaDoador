@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import sys
 from pathlib import Path
 
@@ -12,7 +13,13 @@ try:
     from main import app
 
     def export_openapi():
-        base_dir = project_root / "api-client"
+        # 1. Altere a parte do "temporary directory"
+        export_dir = os.environ.get("EXPORT_DIR")
+        if export_dir:
+            base_dir = Path(export_dir)
+        else:
+            base_dir = project_root / "api-client"
+
         base_dir.mkdir(parents=True, exist_ok=True)
 
         # Generate openapi.json
@@ -30,36 +37,27 @@ try:
         except Exception:
             pass
 
-        # 1. Managed localhost environment
+        # Managed localhost environment
         localhost_file = env_dir / "localhost.bru"
-        localhost_content = "vars {\n  baseUrl: http://localhost:8000\n}\n"
-        with open(localhost_file, "w") as f:
-            f.write(localhost_content)
-        print(f"Success: {localhost_file}")
 
-        # 2. User variables (created only if it doesn't exist)
-        user_vars_file = env_dir / "your-variables-here.bru"
-        if not user_vars_file.exists():
-            user_vars_content = "vars {\n  # Add your variables here\n  # baseUrl: http://localhost:8000\n}\n"
-            with open(user_vars_file, "w") as f:
-                f.write(user_vars_content)
-            print(f"Success: {user_vars_file}")
+        # 2. vamos trocar o arquivo "localhost.bru" gerado pelo backup que fizemos
+        backup_file = Path("/tmp/localhost.bru.bak")
+        if backup_file.exists():
+            shutil.copy(backup_file, localhost_file)
+            print(f"Restored backup from {backup_file} to {localhost_file}")
         else:
-            print(f"Skipped: {user_vars_file} (already exists)")
+            localhost_content = "vars {\n  baseUrl: http://localhost:8000\n}\n"
+            with open(localhost_file, "w") as f:
+                f.write(localhost_content)
+            print(f"Success: {localhost_file}")
 
         # Ensure permissions for all environment files
-        for file in [localhost_file, user_vars_file]:
+        for file in [localhost_file]:
             try:
                 if file.exists():
                     os.chmod(file, 0o666)
             except Exception:
                 pass
-
-        # 3. Cleanup old Local.bru if exists
-        old_local = env_dir / "Local.bru"
-        if old_local.exists():
-            old_local.unlink()
-            print(f"Removed legacy file: {old_local}")
 
     if __name__ == "__main__":
         export_openapi()
