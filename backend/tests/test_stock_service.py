@@ -76,6 +76,28 @@ class TestStockService(unittest.TestCase):
         self.assertEqual(len(result), 0)
         self.mock_repo.upsert.assert_not_called()
 
+    def test_get_all_stock_levels(self):
+        from datetime import datetime
+
+        from models.blood_stock_model import BloodStock
+
+        # Mock repository return
+        mock_stock = BloodStock(
+            blood_type=BloodType.A_POS,
+            status=StockStatus.STABLE,
+            last_updated=datetime.now(),
+        )
+        self.mock_repo.get_all.return_value = [mock_stock]
+
+        # Execute
+        result = self.service.get_all_stock_levels()
+
+        # Assertions
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].blood_type, BloodType.A_POS)
+        self.assertEqual(result[0].status, StockStatus.STABLE)
+        self.mock_repo.get_all.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main()
