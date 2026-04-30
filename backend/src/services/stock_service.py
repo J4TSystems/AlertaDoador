@@ -1,9 +1,10 @@
 from datetime import datetime
-from typing import Dict, List
+from typing import List
 
 from dtos.stock_dto import BloodStockDTO
-from models.blood_stock_model import BloodType, StockStatus
+from models.blood_stock_model import BloodStock
 from repositories.stock_repository import StockRepository
+from scrapers.prosangue_scraper import ProSangueScraper, StockClassifier
 
 
 class StockService:
@@ -12,23 +13,44 @@ class StockService:
 
     def get_all_stock_levels(self) -> List[BloodStockDTO]:
         """
-        Return a hardcoded list of 1 or 2 BloodStockDTO objects.
+        Return all blood stock levels from the repository.
         """
+        stocks = self.repository.get_all()
         return [
             BloodStockDTO(
-                blood_type=BloodType.A_POS,
-                status=StockStatus.STABLE,
-                last_updated=datetime.now(),
-            ),
-            BloodStockDTO(
-                blood_type=BloodType.O_NEG,
-                status=StockStatus.CRITICAL,
-                last_updated=datetime.now(),
-            ),
+                blood_type=stock.blood_type,
+                status=stock.status,
+                last_updated=stock.last_updated,
+            )
+            for stock in stocks
         ]
 
-    def sync_with_external_source(self) -> Dict[str, str]:
+    def sync_with_external_source(self) -> List[BloodStockDTO]:
         """
-        Return a simple dictionary message.
+        Sync blood stock data from an external source.
         """
-        return {"message": "Sync triggered successfully"}
+        mapped_data = ProSangueScraper.scrape_mapped_data()
+        if not mapped_data:
+            return []
+
+        dtos = []
+        now = datetime.now()
+
+        for data in mapped_data:
+            blood_type = data["blood_type"]
+            qty = data["quantity"]
+            ref = data["reference"]
+
+            status = StockClassifier.classify(qty, ref)
+
+            dto = BloodStockDTO(blood_type=blood_type, status=status, last_updated=now)
+            dtos.append(dto)
+
+            model = BloodStock(
+                blood_type=dto.blood_type,
+                status=dto.status,
+                last_updated=dto.last_updated,
+            )
+            self.repository.upsert(model)
+
+        return dtos
