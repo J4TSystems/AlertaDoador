@@ -79,6 +79,7 @@ class NotificationService:
 
     def get_sent_logs(self) -> List[NotificationLogDTO]:
         """
-        Return an empty list [].
+        Retrieves all sent notification logs.
         """
-        return []
+        logs = self.repository.get_all()
+        return [NotificationLogDTO.model_validate(log) for log in logs]
