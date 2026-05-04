@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import StockLevels from './StockLevels';
 import { Droplet } from 'lucide-react';
 
 export default function App() {
@@ -16,10 +17,20 @@ export default function App() {
           <Sidebar />
           <main className="flex-1 p-8">
             <Routes>
-              <Route path="/" element={<h2 className="text-3xl font-bold mb-6">Visão Geral</h2>} />
+              <Route path="/" element={
+                <>
+                  <h2 className="text-3xl font-bold mb-6">Visão Geral</h2>
+                  <StockLevels />
+                </>
+              } />
               <Route path="/doadores" element={<h2 className="text-3xl font-bold mb-6">Doadores</h2>} />
               <Route path="/historico" element={<h2 className="text-3xl font-bold mb-6">Histórico de Alertas</h2>} />
-              <Route path="/estoque" element={<h2 className="text-3xl font-bold mb-6">Gestão de Estoque</h2>} />
+              <Route path="/estoque" element={
+                <>
+                  <h2 className="text-3xl font-bold mb-6">Gestão de Estoque</h2>
+                  <StockLevels />
+                </>
+              } />
             </Routes>
           </main>
         </div>
