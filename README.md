@@ -31,6 +31,7 @@ Para rodar o projeto localmente usando Docker, siga os passos abaixo:
    - **Frontend:** [http://localhost:3000](http://localhost:3000)
    - **Backend (API):** [http://localhost:8000](http://localhost:8000)
    - **Documentação API (Swagger):** [http://localhost:8000/docs](http://localhost:8000/docs)
+   - **Mailpit (Dashboard de E-mails):** http://localhost:8025
 
 4. **Ver logs:**
    ```bash

@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from dtos.donor_dto import DonorCreate
+from dtos.donor_dto import BloodType, DonorCreate
 from models.donor_model import DonorModel
 from sqlalchemy.orm import Session
 
@@ -28,6 +28,13 @@ class DonorRepository:
 
     def get_all(self) -> List[DonorModel]:
         return self.db.query(DonorModel).all()
+
+    def get_by_blood_types(self, blood_types: List[BloodType]) -> List[DonorModel]:
+        return (
+            self.db.query(DonorModel)
+            .filter(DonorModel.blood_type.in_(blood_types))
+            .all()
+        )
 
     def delete(self, donor: DonorModel) -> None:
         self.db.delete(donor)
