@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import AlertDispatchControl from './AlertDispatchControl';
 
 const maskEmail = (email) => {
   if (!email || !email.includes('@')) return email;
@@ -11,22 +12,27 @@ const maskEmail = (email) => {
 export default function AlertHistory() {
   const [history, setHistory] = useState([]);
 
+  const fetchHistory = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/notifications/history');
+      const data = await response.json();
+      setHistory(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/notifications/history');
-        const data = await response.json();
-        setHistory(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    
     fetchHistory();
   }, []);
 
   return (
-    <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+    <>
+      <AlertDispatchControl 
+        onAlertSent={fetchHistory} 
+        lastAlertDate={history.length > 0 ? history[0].sent_at : null} 
+      />
+      <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -60,5 +66,6 @@ export default function AlertHistory() {
         </table>
       </div>
     </section>
+    </>
   );
 }
