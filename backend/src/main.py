@@ -6,6 +6,7 @@ from controllers.notification_controller import router as notification_router
 from controllers.stock_controller import router as stock_router
 from exceptions.exception_handlers import register_exception_handlers
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from models.donor_model import Base
 
 # Configure logging
@@ -19,6 +20,14 @@ logger = logging.getLogger(__name__)
 init_db(Base)
 
 app = FastAPI(title="Blood Donation System API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 register_exception_handlers(app)
 
