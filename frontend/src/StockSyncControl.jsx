@@ -1,9 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { RefreshCw } from 'lucide-react';
 
 export default function StockSyncControl() {
   const [lastSync, setLastSync] = useState(null);
   const [isSyncing, setIsSyncing] = useState(false);
+
+  useEffect(() => {
+    const fetchInitialSyncDate = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/stock/');
+        const data = await response.json();
+        if (data && data.length > 0 && data[0].last_updated) {
+          setLastSync(data[0].last_updated);
+        }
+      } catch (error) {
+        console.error('Error fetching initial stock date:', error);
+      }
+    };
+    fetchInitialSyncDate();
+  }, []);
 
   const handleSync = async () => {
     setIsSyncing(true);
