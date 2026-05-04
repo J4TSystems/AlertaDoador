@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import StockLevels from './StockLevels';
 import StockSyncControl from './StockSyncControl';
+import AlertHistory from './AlertHistory';
 import { Droplet } from 'lucide-react';
 
 export default function App() {
@@ -25,7 +26,12 @@ export default function App() {
                 </>
               } />
               <Route path="/doadores" element={<h2 className="text-3xl font-bold mb-6">Doadores</h2>} />
-              <Route path="/historico" element={<h2 className="text-3xl font-bold mb-6">Histórico de Alertas</h2>} />
+              <Route path="/historico" element={
+                <>
+                  <h2 className="text-3xl font-bold mb-6">Histórico de Alertas</h2>
+                  <AlertHistory />
+                </>
+              } />
               <Route path="/estoque" element={
                 <>
                   <h2 className="text-3xl font-bold mb-6">Gestão de Estoque</h2>
