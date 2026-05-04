@@ -2,6 +2,10 @@
 
 **Projeto Integrador - UNIVESP**
 
+https://github.com/user-attachments/assets/12f9617e-972d-4438-b877-77773a5e5b07
+
+
+
 ## Sobre o Projeto
 O objetivo é conectar a demanda real dos hemocentros com alunos dispostos a doar enviando notificações direcionadas apenas quando um tipo sanguíneo específico entra em falta.
 
