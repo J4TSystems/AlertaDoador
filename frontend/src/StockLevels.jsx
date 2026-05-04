@@ -21,10 +21,13 @@ export default function StockLevels() {
     };
     
     fetchStock();
+
+    window.addEventListener('stock-synced', fetchStock);
+    return () => window.removeEventListener('stock-synced', fetchStock);
   }, []);
 
   return (
-    <section>
+    <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
       <h3 className="text-xl font-bold mb-4 text-slate-900">
         Níveis de Estoque em Tempo Real
       </h3>

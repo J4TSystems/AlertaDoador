@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import StockLevels from './StockLevels';
+import StockSyncControl from './StockSyncControl';
 import { Droplet } from 'lucide-react';
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
                 <>
                   <h2 className="text-3xl font-bold mb-6">Gestão de Estoque</h2>
                   <StockLevels />
+                  <StockSyncControl />
                 </>
               } />
             </Routes>
