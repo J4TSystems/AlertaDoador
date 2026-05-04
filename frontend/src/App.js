@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import StockLevels from './StockLevels';
 import StockSyncControl from './StockSyncControl';
 import AlertHistory from './AlertHistory';
+import DonorsPage from './pages/DonorsPage';
 import { Droplet } from 'lucide-react';
 
 export default function App() {
@@ -25,7 +26,12 @@ export default function App() {
                   <StockLevels />
                 </>
               } />
-              <Route path="/doadores" element={<h2 className="text-3xl font-bold mb-6">Doadores</h2>} />
+              <Route path="/doadores" element={
+                <>
+                  <h2 className="text-3xl font-bold mb-6">Doadores</h2>
+                  <DonorsPage />
+                </>
+              } />
               <Route path="/historico" element={
                 <>
                   <h2 className="text-3xl font-bold mb-6">Histórico de Alertas</h2>
