@@ -9,7 +9,10 @@ class NotificationRepository:
         self.db = db
 
     def get_all(self) -> List[NotificationLog]:
-        pass
+        return self.db.query(NotificationLog).all()
 
     def save(self, notification: NotificationLog) -> NotificationLog:
-        pass
+        self.db.add(notification)
+        self.db.commit()
+        self.db.refresh(notification)
+        return notification
