@@ -14,15 +14,15 @@ logger = logging.getLogger(__name__)
 
 
 def build_donor_alert(donor_name: str, blood_type: str) -> tuple[str, str]:
-    subject = f"Urgent: Blood Type {blood_type} Needed at Pró-Sangue"
+    subject = f"Urgente: Tipo Sanguíneo {blood_type} Necessário na Pró-Sangue"
     body = (
-        f"Hello {donor_name},\n\n"
-        "Our system (AlertaDoador) has identified a critical shortage for your "
-        f"blood type ({blood_type}).\n"
-        "Your donation can save lives. Please consider visiting the nearest "
-        "Pró-Sangue station as soon as possible.\n\n"
-        "Thank you for your support,\n"
-        "The AlertaDoador Team\n"
+        f"Olá {donor_name},\n\n"
+        "Nosso sistema (AlertaDoador) identificou um estoque crítico para o seu "
+        f"tipo sanguíneo ({blood_type}).\n"
+        "Sua doação pode salvar vidas. Por favor, considere visitar o posto da "
+        "Pró-Sangue mais próximo o quanto antes.\n\n"
+        "Agradecemos o seu apoio,\n"
+        "Equipe AlertaDoador\n"
     )
     return subject, body
 
