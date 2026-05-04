@@ -3,6 +3,7 @@ import uuid
 from typing import List
 
 from dtos.notification_dto import NotificationLogDTO
+from email_infra.interfaces.email_provider import EmailProvider
 from models.blood_stock_model import StockStatus
 from models.notification_model import NotificationLog
 from repositories.donor_repository import DonorRepository
@@ -12,16 +13,32 @@ from repositories.stock_repository import StockRepository
 logger = logging.getLogger(__name__)
 
 
+def build_donor_alert(donor_name: str, blood_type: str) -> tuple[str, str]:
+    subject = f"Urgent: Blood Type {blood_type} Needed at Pró-Sangue"
+    body = (
+        f"Hello {donor_name},\n\n"
+        "Our system (AlertaDoador) has identified a critical shortage for your "
+        f"blood type ({blood_type}).\n"
+        "Your donation can save lives. Please consider visiting the nearest "
+        "Pró-Sangue station as soon as possible.\n\n"
+        "Thank you for your support,\n"
+        "The AlertaDoador Team\n"
+    )
+    return subject, body
+
+
 class NotificationService:
     def __init__(
         self,
         repository: NotificationRepository,
         stock_repository: StockRepository,
         donor_repository: DonorRepository,
+        email_provider: EmailProvider,
     ):
         self.repository = repository
         self.stock_repository = stock_repository
         self.donor_repository = donor_repository
+        self.email_provider = email_provider
 
     def process_critical_notifications(self) -> List[NotificationLogDTO]:
         """
@@ -56,22 +73,37 @@ class NotificationService:
 
         notification_logs = []
 
-        # 5. Create logs
+        # 5. Create logs and send emails
         for donor in donors:
             logger.info(
                 "Creating notification for donor %s (Blood Type: %s)",
                 donor.email,
                 donor.blood_type,
             )
-            log = NotificationLog(
-                id=str(uuid.uuid4()),
-                recipient_email=donor.email,
-                blood_type=donor.blood_type,
-                status_at_time=stock_map[donor.blood_type],
+
+            # Generate subject and body
+            blood_type_str = (
+                donor.blood_type.value
+                if hasattr(donor.blood_type, "value")
+                else donor.blood_type
             )
-            # 6. Save logs
-            saved_log = self.repository.save(log)
-            notification_logs.append(NotificationLogDTO.model_validate(saved_log))
+            subject, body = build_donor_alert(donor.full_name, blood_type_str)
+
+            # Call email provider
+            email_sent = self.email_provider.send_email(donor.email, subject, body)
+
+            if email_sent:
+                log = NotificationLog(
+                    id=str(uuid.uuid4()),
+                    recipient_email=donor.email,
+                    blood_type=donor.blood_type,
+                    status_at_time=stock_map[donor.blood_type],
+                )
+                # 6. Save logs
+                saved_log = self.repository.save(log)
+                notification_logs.append(NotificationLogDTO.model_validate(saved_log))
+            else:
+                logger.error(f"Failed to send email to {donor.email}. Log not saved.")
 
         # 7. Return
         logger.info(f"Process completed. {len(notification_logs)} notifications sent.")
