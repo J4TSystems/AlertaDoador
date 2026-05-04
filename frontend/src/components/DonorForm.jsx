@@ -23,6 +23,9 @@ export default function DonorForm({ initialData, onSubmit, onCancel }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
+    if (!initialData) {
+      setFormData({ full_name: '', email: '', blood_type: 'A+' });
+    }
   };
 
   return (

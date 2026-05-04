@@ -10,12 +10,11 @@ const maskEmail = (email) => {
 
 const maskName = (name) => {
   if (!name) return name;
-  const parts = name.split(' ');
+  const parts = name.trim().split(/\s+/);
   return parts.map((part, index) => {
-    if (index === 0) return part; // Keep first name mostly intact or you can mask it too. Let's mask all words longer than 2.
+    if (index === 0) return part;
     if (part.length <= 2) return `${part[0]}*`;
-    const mid = Math.floor(part.length / 2);
-    return `${part.substring(0, mid - 1)}****${part.substring(mid + 1)}`;
+    return `${part[0]}***${part[part.length - 1]}`;
   }).join(' ');
 };
 
